@@ -1,0 +1,57 @@
+Answers to Questionnaire
+
+Question 1
+
+  200
+
+Question 2
+
+  Flushing Crossfit
+
+Question 3
+
+  yoga
+
+Question 4
+
+  5 Members
+
+Question 5 
+
+  Mornings, Mornings
+
+Question 6
+
+  5
+
+Question 7
+
+Select cr.id, 
+	cr.member_id,
+	cr.studio_Key,
+	 Null as studio_address,
+	 null as studio_city,
+	 null as studio_state,
+	 null as zip,
+	cr.class_tag,
+	cr.instructor_full_name,
+	cr.level, 
+	cr.canceled,
+	cr.reserved_for,
+	cr.signed_in_at
+from clubready_reservations cr
+union
+Select * 
+from mindbody_reservations mr
+
+
+Project Discussion
+
+1. There is an opportunity to standardize the datesets by having a common standardized format for all clubs.
+ By standardizating the format the clubs dataset would hopefully contain similar data or at the very least similar columns.
+
+2. Trend analysis and Cohort analysis are the major forecasting opportunities for a dataset like this.Because of how the 
+data is set up a simple pivot or third party analysis platform would be able to easily add insights to the data.
+
+3. A date table would help make reporting and forecasting more robust. By being able to use time series analysis,
+ I would be able to identify historical trends and forecast base on those findings.
