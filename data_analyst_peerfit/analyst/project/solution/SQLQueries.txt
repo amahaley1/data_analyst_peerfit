@@ -1,0 +1,31 @@
+MySql queries for Dataset
+
+--Question 1
+
+Select Count(reserved_for) 
+From clubready_reservations
+Where monthname(reserved_for) in ('January','February');
+
+Select Count(reserved_at)
+From mindbody_reservations
+Where monthname(reserved_at) in ('January','February');
+
+
+--Question 2
+
+Select a.studio_key,cm abandCount, Count(a.studio_key)ResCnt from mindbody_reservations a
+left join (
+Select studio_key, canceled_at,checked_in_at,count(*) CM
+From mindbody_reservations b 
+Group by 1,2,3 )  as cnt on cnt.studio_key = a.studio_key
+where cnt.canceled_at is null and cnt.checked_in_at is null 
+group by 1,2 
+
+
+Select a.studio_key,cm abandCount, Count(a.studio_key)ResCnt from clubready_reservations a
+left join (
+Select studio_key, canceled,signed_in_at,count(*) CM
+From clubready_reservations b 
+Group by 1,2,3 )  as cnt on cnt.studio_key = a.studio_key
+where cnt.canceled ='f' and cnt.signed_in_at is null 
+group by 1,2 
