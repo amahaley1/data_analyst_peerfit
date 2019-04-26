@@ -29,3 +29,39 @@ From clubready_reservations b
 Group by 1,2,3 )  as cnt on cnt.studio_key = a.studio_key
 where cnt.canceled ='f' and cnt.signed_in_at is null 
 group by 1,2 
+
+
+--Question 3
+
+select class_tag , count(*)
+from clubready_reservations
+where monthname(reserved_for) = 'February'
+group by 1;
+
+Select class_tag, count(*) 
+from mindbody_reservations
+where monthname(reserved_at) = 'February'
+group by 1
+order by 2 desc
+
+
+--Question 4
+
+Select Studio_key,reserved_at , Canceled_at, count(*) over (partition by studio_key)
+from mindbody_reservations 
+where canceled_at is not null and monthname(Canceled_at)='January'
+
+Select Studio_key,reserved_for , Canceled, count(*) over (partition by studio_key)
+from clubready_reservations 
+where canceled ='t'  and monthname(reserved_for)='January'
+
+
+
+
+
+
+
+
+
+
+
