@@ -17,18 +17,20 @@ Select a.studio_key,cm abandCount, Count(a.studio_key)ResCnt from mindbody_reser
 left join (
 Select studio_key, canceled_at,checked_in_at,count(*) CM
 From mindbody_reservations b 
-Group by 1,2,3 )  as cnt on cnt.studio_key = a.studio_key
+Group by 1,2,3 )  as cnt 
+on cnt.studio_key = a.studio_key
 where cnt.canceled_at is null and cnt.checked_in_at is null 
-group by 1,2 
+group by 1,2 ;
 
 
 Select a.studio_key,cm abandCount, Count(a.studio_key)ResCnt from clubready_reservations a
 left join (
 Select studio_key, canceled,signed_in_at,count(*) CM
 From clubready_reservations b 
-Group by 1,2,3 )  as cnt on cnt.studio_key = a.studio_key
+Group by 1,2,3 )  as cnt 
+on cnt.studio_key = a.studio_key
 where cnt.canceled ='f' and cnt.signed_in_at is null 
-group by 1,2 
+group by 1,2 ;
 
 
 --Question 3
@@ -42,7 +44,7 @@ Select class_tag, count(*)
 from mindbody_reservations
 where monthname(reserved_at) = 'February'
 group by 1
-order by 2 desc
+order by 2 desc ;
 
 
 --Question 4
@@ -53,10 +55,55 @@ where canceled_at is not null and monthname(Canceled_at)='January'
 
 Select Studio_key,reserved_for , Canceled, count(*) over (partition by studio_key)
 from clubready_reservations 
-where canceled ='t'  and monthname(reserved_for)='January'
+where canceled ='t'  and monthname(reserved_for)='January' ;
+
+
+--Question 5
+
+Select WT, Count(WT) as Reserved_times  from(
+Select *, Case 
+			When Cast(reserved_at as time)  between maketime(7,00,0) and maketime(11,00,0) then 'Morning' 
+			When Cast(reserved_at as time)  between maketime(12,00,0) and maketime(16,00,0) then 'Afternoon' 
+			When Cast(reserved_at as time)  between maketime(17,00,0) and maketime(22,00,0) then 'Evening' 
+				else  'Afterhours'
+               end WT
+from mindbody_reservations ) x
+group by WT;
+
+
+Select WT, Count(WT)  from(
+Select *, Case 
+			When Cast(checked_in_at as time)  between maketime(7,00,0) and maketime(11,00,0) then 'Morning' 
+			When Cast(checked_in_at as time)  between maketime(12,00,0) and maketime(16,00,0) then 'Afternoon' 
+			When Cast(Checked_in_at as time)  between maketime(17,00,0) and maketime(22,00,0) then 'Evening' 
+            When Cast(checked_in_at as time) is null then 'did not check in'
+				else  'Afterhours'
+               end WT
+from mindbody_reservations ) x
+group by WT;
 
 
 
+Select WT, Count(WT) as Reserved_times  from(
+Select *, Case 
+			When Cast(reserved_for as time)  between maketime(7,00,0) and maketime(11,00,0) then 'Morning' 
+			When Cast(reserved_for as time)  between maketime(12,00,0) and maketime(16,00,0) then 'Afternoon' 
+			When Cast(reserved_for as time)  between maketime(17,00,0) and maketime(22,00,0) then 'Evening' 
+				else  'Afterhours'
+               end WT
+from clubready_reservations ) x
+group by WT;
+
+Select WT, Count(WT) checked_in_count  from(
+Select *, Case 
+			When Cast(signed_in_at as time)  between maketime(7,00,0) and maketime(11,00,0) then 'Morning' 
+			When Cast(signed_in_at as time)  between maketime(12,00,0) and maketime(16,00,0) then 'Afternoon' 
+			When Cast(signed_in_at as time)  between maketime(17,00,0) and maketime(22,00,0) then 'Evening' 
+            When Cast(signed_in_at as time) is null then 'did not check in'
+				else  'Afterhours'
+               end WT
+from clubready_reservations ) x
+group by WT;
 
 
 
