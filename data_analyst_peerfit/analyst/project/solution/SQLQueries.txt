@@ -124,6 +124,26 @@ group by 1) f;
 
 
 
+--Question 7
+
+Select cr.id, 
+	cr.member_id,
+	cr.studio_Key,
+	 Null as studio_address,
+	 null as studio_city,
+	 null as studio_state,
+	 null as zip,
+	cr.class_tag,
+	cr.instructor_full_name,
+	cr.level, 
+	cr.canceled,
+	cr.reserved_for,
+	cr.signed_in_at
+from clubready_reservations cr
+union
+Select * 
+from mindbody_reservations mr ;
+
 
 
 
